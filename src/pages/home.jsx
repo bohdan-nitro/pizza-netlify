@@ -27,7 +27,7 @@ function Home() {
 
     React.useEffect(() => {
         dispatch(fetchPizzas(sortBy, category));
-        axios.get("https://6295fb94c558d5000918b91b--gleeful-flan-b138e8.netlify.app/db.json/pizzas").then(res => console.log(res.data))
+        axios.get("https://6295fb94c558d5000918b91b--gleeful-flan-b138e8.netlify.app/db.json").then(res => console.log(res.data))
     },[sortBy, category]);
 
 
