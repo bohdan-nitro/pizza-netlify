@@ -23,6 +23,7 @@ function Header() {
                             <h1>React Pizza</h1>
                             <p>самая вкусная пицца во вселенной</p>
                             <p>Test netlfy</p>
+                            <p>And another test</p>
                         </div>
                     </div>
                 </Link>
