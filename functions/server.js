@@ -1,5 +1,6 @@
-module.exports = (event) => {
-    const url = "Hello";
-    console.log(url)
-    return  url;
+exports.handler = async function(event, context) {
+    return {
+        statusCode: 200,
+        body: JSON.stringify({message: "Hello Server"})
+    }
 }

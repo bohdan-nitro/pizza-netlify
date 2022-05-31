@@ -6,6 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 import { setCategory, setSortBy } from "../redux/actions/filters";
 
 import {fetchPizzas} from "../redux/actions/pizzas";
+import axios from "axios";
 
 
 const categoryNames = ["Мясные", "Вегетарианская", "Гриль", "Острые", "Закрытые"];
@@ -26,6 +27,7 @@ function Home() {
 
     React.useEffect(() => {
         dispatch(fetchPizzas(sortBy, category));
+        axios.get("https://6295fb94c558d5000918b91b--gleeful-flan-b138e8.netlify.app/db.json/pizzas").then(res => console.log(res.data))
     },[sortBy, category]);
 
 
