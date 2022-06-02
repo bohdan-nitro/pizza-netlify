@@ -22,8 +22,9 @@
     }
 
     span {
-      color: $orange;
-      border-bottom: 1px dashed $orange;
+      color: $greenTheme;
+      border-bottom: 1px dashed $greenTheme;
+      letter-spacing: 1px;
       cursor: pointer;
     }
   }
@@ -52,7 +53,7 @@
 
         &.active {
           font-weight: bold;
-          color: $orange;
+          color: $greenTheme;
         }
       }
     }

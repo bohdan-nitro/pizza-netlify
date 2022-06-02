@@ -12,7 +12,7 @@ function LoadingBlock() {
             backgroundColor="#f3f3f3"
             foregroundColor="#ecebeb"
         >
-            <circle cx="130" cy="158" r="130" />
+            <circle cx="130" cy="150" r="130" />
             <rect x="0" y="299" rx="3" ry="3" width="242" height="25" />
             <rect x="0" y="335" rx="6" ry="6" width="238" height="109" />
             <rect x="0" y="454" rx="4" ry="4" width="77" height="28" />

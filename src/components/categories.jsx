@@ -34,12 +34,17 @@ import PropTypes from "prop-types";
 // }
 
 const Categories = React.memo(
-    function Categories({items, onClickCategory, activeCategory}) {
+    function Categories({items, onClickCategory, activeCategory, value}) {
+        console.log(value)
+
+        const categories = ["Все","Мясные", "Гриль", "Острые", "Закрытые", "Вегетаринская"];
+
+
 
         return (
             <div>
                 <div className="categories">
-                    <ul>
+                    {/* <ul>
                         <li className={activeCategory === null ? "active" : ""}
                             onClick={() => onClickCategory(null)}>Все
                         </li>
@@ -47,7 +52,11 @@ const Categories = React.memo(
                         items.map((name, index) => (
                             <li className={activeCategory === index ? "active" : ""}
                                 onClick={() => onClickCategory(index)} key={`${name}_${index}`}>{name}</li>))}
+                    </ul> */}
+                    <ul>
+                        {categories.map((item, i) => <li className={value === i ? "active" : ""} onClick={() => onClickCategory(i)} key={i}>{item}</li>)}
                     </ul>
+
                 </div>
             </div>
         );

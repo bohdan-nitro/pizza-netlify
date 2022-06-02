@@ -20,10 +20,8 @@ function Header() {
                     <div className="header__logo">
                         <img width="45" src={logoSvg} alt="Pizza logo"/>
                         <div>
-                            <h1>React Pizza</h1>
-                            <p>самая вкусная пицца во вселенной</p>
-                            <p>Test netlfy</p>
-                            <p>And another test</p>
+                            <h1>Nitro Way Pizza</h1>
+                            <p>Deribasovka street 32/6</p>
                         </div>
                     </div>
                 </Link>

@@ -1,0 +1,61 @@
+@import "../../scss//variables";
+
+.root {
+    display: flex;
+
+    ul {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        max-width: 400px;
+        padding-bottom: 40px;
+
+        li {
+            display: inline-block;
+            transition: all 0.2s ease;
+          
+            
+
+            a {
+                border-radius: 30px;
+                border: 1px solid $greenTheme;
+                padding: 10px 15px;
+                width: 43px;
+                height: 43px;
+                text-align: center;
+                transition: all 0.2s ease;
+                cursor: pointer;
+                line-height: 24px;
+                font-size: 16px;
+                font-weight: 700;
+                
+
+                &:hover {
+                    background-color: $greenTheme;
+                    border: 1px solid rgba(255, 255, 255, 0);
+                   
+                    color: #fff;
+                    
+                }
+            }
+
+        }
+
+    }
+
+    :global {
+        
+        .selected {
+            transform: scale(1.2);
+           
+            a {
+                background-color: $greenTheme;
+                border: 1px solid rgba(255, 255, 255, 0);
+                color: #fff;
+                width: 50px;
+                
+            }
+        }
+    }
+
+}
