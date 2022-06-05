@@ -9,7 +9,16 @@ import {element} from "prop-types";
 
 function Cart() {
     const dispatch = useDispatch();
-    const { totalPrice, totalCount, items } = useSelector(({ cart }) => cart);
+                        //totalPrice, totalCount
+    // const { items } = useSelector(({ cart }) => cart);
+
+    const items = {
+        
+    }
+
+    const totalCount = 0;
+
+    const totalPrice = 35;
 
     const [open, setOpen] = useState(false)
 
@@ -68,6 +77,8 @@ function Cart() {
         }
 
     };
+
+    
 
 
 

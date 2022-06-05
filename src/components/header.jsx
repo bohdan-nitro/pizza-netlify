@@ -11,7 +11,7 @@ import Search from "./Search";
 function Header() {
     //Берем данные с редакса деструктурируем обьект карт и берем из него значения цены и счетчика
     //useSelector должен вернуть ответ в виде обьекта
-    const {totalPrice, totalCount} = useSelector(({ cart }) => cart);
+    // const {totalPrice, totalCount} = useSelector(({ cart }) => cart);
 
     return (
         <div className="header">
@@ -30,7 +30,7 @@ function Header() {
                 <div className="header__cart">
                     <Link to={"/cart"}>
                         <Button className={"button--cart"}>
-                            <span>{totalPrice}₽</span>
+                            <span>{""}UA</span>
                             <div className="button__delimiter"></div>
                             <svg
                                 width="18"
@@ -61,7 +61,7 @@ function Header() {
                                     strokeLinejoin="round"
                                 />
                             </svg>
-                            <span>{totalCount}</span>
+                            <span>{"0"}</span>
                         </Button>
                     </Link>
                 </div>

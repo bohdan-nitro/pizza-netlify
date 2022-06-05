@@ -2,44 +2,11 @@ import React from 'react';
 import PropTypes from "prop-types";
 
 
-//Классовый компонент
-
-// class Categories extends React.Component {
-//     state = {
-//         activeItem: null,
-//     };
-//
-//     onSelectItem = (index) => {
-//         this.setState({
-//             activeItem: index,
-//         });
-//     };
-//
-//     render() {
-//         const {items, onClickItem} = this.props;
-//         return (
-//             <div>
-//                 <div className="categories">
-//                     <ul>
-//                         <li className="active">Все</li>
-//                         {items.map((name, index) => (
-//                             <li className={this.state.activeItem === index ? "active" : ""}
-//                                 onClick={() => this.onSelectItem(index)}
-//                                 key={`${name}_${index}`}>{name}</li>))}
-//                     </ul>
-//                 </div>
-//             </div>
-//         );
-//     }
-// }
-
 const Categories = React.memo(
-    function Categories({items, onClickCategory, activeCategory, value}) {
-        console.log(value)
+    function Categories({ onClickCategory, value}) {
+     
 
         const categories = ["Все","Мясные", "Гриль", "Острые", "Закрытые", "Вегетаринская"];
-
-
 
         return (
             <div>
