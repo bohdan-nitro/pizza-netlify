@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React, {useState, useRef} from "react"
 
 import styles from "./search.module.scss";
 import {useSelector} from "react-redux";
@@ -8,17 +8,22 @@ import {useSelector} from "react-redux";
 
 
 const Search = () => {
-    const state = useSelector(state => state.pizzas);
+    
     const [name, setName] = useState("");
 
-    const filteredPizzas = state.items.map(elem => elem).filter(item => item.name === name)
+    const inputRef = useRef(null);
+
+   
+
+
 
     const handleChange = (e) => {
         setName(e.target.value)
     }
 
     const clearInput = () => {
-        setName("")
+        setName("");
+        inputRef.current.focus()
     }
 
 
@@ -44,7 +49,7 @@ const Search = () => {
     return (
         <div className={styles.wrapper}>
             <SearchIcon/>
-            <input className={styles.root} value={name} onChange={handleChange} type="text" placeholder="Поиск пиццы ..." />
+            <input ref={inputRef} className={styles.root} value={name} onChange={handleChange} type="text" placeholder="Поиск пиццы ..." />
             {name && <CloseIcon/>}
         </div>
     )
