@@ -1,21 +1,29 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+
 import { Categories, PizzaBlock, SortPopUp, PizzaLoadingBlock } from "../components";
+
+import qs from "qs"
 
 import { useDispatch, useSelector } from "react-redux";
 
+import { useNavigate } from "react-router-dom"
+
 import { setCategory, setSortBy } from "../redux/actions/filters";
 
-import { setCategoryId, setPaginationId } from '../reduxToolkit/slices/filterSlice';
+import { setCategoryId, setPaginationId, setFilters } from '../reduxToolkit/slices/filterSlice';
 
 import { fetchPizzas } from "../redux/actions/pizzas";
+
 import axios from "axios";
 
 import Pagination from '../components/Pagination';
+import { sortList } from '../components/sortPopUp';
 
 
 
 
 const categoryNames = ["Мясные", "Вегетарианская", "Гриль", "Острые", "Закрытые"];
+
 const sortItems = [
     { name: "популярности", type: "popular", order: "desc" },
     { name: "цене", type: "price", order: "desc" },
@@ -23,30 +31,34 @@ const sortItems = [
 ];
 
 function Home() {
+
     const dispatch = useDispatch();
 
+    const navigate = useNavigate();
+
+    const isSearch = useRef(false);
+
+    const isMounted = useRef(false);
+
     const categoryIdToolkit = useSelector(state => state.filter.categoryId);
-    const paginatinToolkit = useSelector(state => state.filter.value);
+
+    const paginatinToolkit = useSelector(state => state.filter.currentPage);
 
     const sortProperty = useSelector(state => state.filter.sort.sortProperty);
 
+    const searchValue = useSelector(state => state.filter.searchValue);
 
 
-    // const items = useSelector(({ pizzas }) => pizzas.items);
-    // const cartItems = useSelector(({ cart }) => cart.items);
-    // const isLoaded = useSelector(({ pizzas }) => pizzas.isLoaded);
-    // const { category, sortBy } = useSelector(({ filter }) => filter);
+
+    // const items = useSelector(({ pizzas }) => pizzas.items);sort
 
     /////////////////////////////////////////////////////////////
     const [pizzaItems, setPizzasItems] = useState([]);
 
     const [isLoading, setIsLoading] = useState(true);
 
-    // const [categoryId, setCategoryId] = useState(0);
 
-    const [sortByType, setSortByType] = useState(0);
 
-    // const [currentPage, setCurentPage] = useState(1);
 
     ////////////////////////////////////////////////////////////////
 
@@ -55,33 +67,83 @@ function Home() {
     // }, [sortBy, category]);
 
 
-   
 
     useEffect(() => {
-        const sortBy = sortProperty.replace("-", "");
-        const order = sortProperty.includes("-") ? "asc": "desc";
-        const category = categoryIdToolkit > 0 ? `category=${categoryIdToolkit}` : "";
-       
+        if (window.location.search) {
+            //Сабстрингом убираем знак вопроса которий ми передаем внизу для запросов
+            const params = qs.parse(window.location.search.substring(1));
 
-        axios.get(`https://62989024de3d7eea3c6aad4a.mockapi.io/items?page=${paginatinToolkit}&limit=6&${category}&sortBy=${sortBy}&order=${order}`)
+            const sort = sortList.find((obj) => obj.sortProperty === params.sortProperty)
+
+            dispatch(setFilters({
+                ...params,
+                sort
+            }))
+            isSearch.current = true
+        }
+    }, []);
+
+    //Получение пиц
+
+    const fetchPizzas = () => {
+        const sortBy = sortProperty.replace("-", "");
+        const order = sortProperty.includes("-") ? "asc" : "desc";
+        const category = categoryIdToolkit > 0 ? `category=${categoryIdToolkit}` : "";
+
+        const search = searchValue;
+
+
+        axios.get(`https://62989024de3d7eea3c6aad4a.mockapi.io/items?page=${paginatinToolkit}&limit=6&${category}&sortBy=${sortBy}&order=${order}&search=${searchValue}`)
             .then(res => {
                 setPizzasItems(res.data);
                 setIsLoading(false);
             })
+    }
 
-            // window.scrollTo(0, 0)
+    useEffect(() => {
+
+        setIsLoading(true);
+
+        if (!isSearch.current) {
+            fetchPizzas()
+            setTimeout(() => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                })
+            }, 200)
+        }
+
+        isSearch.current = false;
+
+
+
+    }, [categoryIdToolkit, paginatinToolkit, sortProperty, searchValue])
+
+
+    //Отлавливаем url 
+
+    useEffect(() => {
+        if (isMounted.current) {
+            const queryString = qs.stringify({
+                sortProperty: sortProperty,
+                categoryIdToolkit,
+                paginatinToolkit
+            })
+            navigate(`?${queryString}`)
+        }
+
+        isMounted.current = true;
 
     }, [categoryIdToolkit, paginatinToolkit, sortProperty])
-
-    console.log(`pagination ${paginatinToolkit}, categories ${categoryIdToolkit}`)
 
 
     const onChangeCategoryId = (id) => {
         dispatch(setCategoryId(id))
     }
 
-    const inChangePaginationId = (id) => {
-        dispatch(setPaginationId(id))
+    const onChangePaginationPage = (num) => {
+        dispatch(setPaginationId(num))
     }
 
 
@@ -103,11 +165,65 @@ function Home() {
         });
     };
 
+    // if(pizzaItems.length){
+    //     pizzaItems.filter((obj) => {
+    //         console.log(obj)
+    //         if (obj.title.includes(searchValue)) {
+    //             return true
+    //         }
+    //         return false
+    //     }).map((obj) => (
+    //             <PizzaBlock
+    //                 onClickAddPizza={() => console.log("ds")}
+    //                 key={obj.id}
+    //                 isLoading={true}
+    //                 {...obj}
+    //             />))
+    // }
+    // const pizzas = pizzaItems.filter((obj) => {
+    //     console.log(obj)
+    //     if (obj.title.includes(searchValue)) {
+    //         return true
+    //     }
+    //     return false
+    // }).map((obj) => (
+    //         <PizzaBlock
+    //             onClickAddPizza={() => console.log("ds")}
+    //             key={obj.id}
+    //             isLoading={true}
+    //             {...obj}
+    //         />))
+
+
+    const pizzas = pizzaItems.map((obj) => (
+        <PizzaBlock
+            onClickAddPizza={() => console.log("ds")}
+            key={obj.id}
+            //addedCount = { cartItems[obj.id] && cartItems[obj.id].items.length }
+            isLoading={true}
+            {...obj}
+        />))
+
+    const filteredWithSearch = pizzas.filter(obj => {
+        if (obj.props.name.toLowerCase().includes(searchValue.toLowerCase())) {
+            return true
+        }
+        return false
+    }).map(obj => <PizzaBlock
+            onClickAddPizza={() => console.log("ds")}
+            key={obj.id}
+            isLoading={true}
+            {...obj}
+        />
+    )
+
+
+
     return (
         <div className="container">
             <div className="content__top">
                 <Categories activeCategory={categoryIdToolkit} onClickCategory={onChangeCategoryId} items={categoryNames} value={categoryIdToolkit} />
-                <SortPopUp value={sortByType} items={sortItems} onClickSortType={onSelectSortType} />
+                <SortPopUp value={sortProperty} items={sortItems} onClickSortType={onSelectSortType} />
             </div>
             <h2 className="content__title">Все пиццы</h2>
             <div className="content__items">
@@ -124,17 +240,10 @@ function Home() {
 
 
                 {
-                    isLoading ? [...new Array(8)].map((_, index) => <PizzaLoadingBlock key={index} />) : pizzaItems.map((obj) => (
-                        <PizzaBlock
-                            onClickAddPizza={() => console.log("ds")}
-                            key={obj.id}
-                            // addedCount = { cartItems[obj.id] && cartItems[obj.id].items.length }
-                            isLoading={true}
-                            {...obj}
-                        />))
+                    isLoading ? [...new Array(8)].map((_, index) => <PizzaLoadingBlock key={index} />) : pizzas
                 }
             </div>
-            <Pagination onChangePage={inChangePaginationId} />
+            <Pagination currentPage={paginatinToolkit} onChangePage={onChangePaginationPage} />
         </div>
     );
 }

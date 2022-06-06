@@ -1,7 +1,10 @@
-import React, {useState, useRef} from "react"
+import React, {useState, useRef, useCallback} from "react"
 
 import styles from "./search.module.scss";
 import {useSelector} from "react-redux";
+
+import debounce from "lodash.debounce";
+import { setSearchValue } from "../../reduxToolkit/slices/filterSlice";
 
 
 
@@ -14,15 +17,22 @@ const Search = () => {
     const inputRef = useRef(null);
 
    
-
+    const updateSearchName = useCallback(
+        debounce((str) => {
+            console.log(str)
+            setSearchValue(str)
+        }, 500), []
+    )
 
 
     const handleChange = (e) => {
         setName(e.target.value)
+        updateSearchName(e.target.value)
     }
 
     const clearInput = () => {
         setName("");
+        setSearchValue("")
         inputRef.current.focus()
     }
 

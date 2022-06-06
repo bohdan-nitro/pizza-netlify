@@ -5,9 +5,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setSort } from '../reduxToolkit/slices/filterSlice';
 
 export const sortList = [
-    { name: 'популярности (DESC)', sortProperty:"raiting", type: "популярности" },
-    { name: 'популярности (ASC)', sortProperty: "-raiting", type: "рейтинг" },
-    { name: 'цене (DESC)', sortProperty: "price", type: "цена" },
+    { name: 'популярности (DESC)', sortProperty:"raiting" },
+    { name: 'популярности (ASC)', sortProperty: "-raiting"},
+    { name: 'цене (DESC)', sortProperty: "price" },
     { name: 'цене (ASC)', sortProperty: "-price" },
     { name: 'алфавиту (DESC)', sortProperty: "title"},
     { name: 'алфавиту (ASC)', sortProperty: "-title"},
