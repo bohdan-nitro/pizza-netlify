@@ -28,6 +28,7 @@ const sortItems = [
     { name: "популярности", type: "popular", order: "desc" },
     { name: "цене", type: "price", order: "desc" },
     { name: "алфавиту", type: "name", order: "asc" }
+
 ];
 
 function Home() {
@@ -38,7 +39,7 @@ function Home() {
 
     const isSearch = useRef(false);
 
-    const isMounted = useRef(false);
+    const isMounted = useRef(null);
 
     const categoryIdToolkit = useSelector(state => state.filter.categoryId);
 
@@ -47,6 +48,8 @@ function Home() {
     const sortProperty = useSelector(state => state.filter.sort.sortProperty);
 
     const searchValue = useSelector(state => state.filter.searchValue);
+
+   
 
 
 
@@ -100,6 +103,8 @@ function Home() {
             })
     }
 
+    
+
     useEffect(() => {
 
         setIsLoading(true);
@@ -111,14 +116,12 @@ function Home() {
                     top: 0,
                     behavior: "smooth"
                 })
-            }, 200)
-        }
-
+            }, 200) 
         isSearch.current = false;
 
+        
 
-
-    }, [categoryIdToolkit, paginatinToolkit, sortProperty, searchValue])
+    }}, [categoryIdToolkit, paginatinToolkit, sortProperty, searchValue])
 
 
     //Отлавливаем url 
@@ -126,14 +129,16 @@ function Home() {
     useEffect(() => {
         if (isMounted.current) {
             const queryString = qs.stringify({
-                sortProperty: sortProperty,
-                categoryIdToolkit,
-                paginatinToolkit
+                sortProperty: sortProperty ? sortProperty : "raiting",
+                categoryIdToolki: categoryIdToolkit ? categoryIdToolkit : 0,
+                paginatinToolkit: paginatinToolkit ? paginatinToolkit : 0
             })
             navigate(`?${queryString}`)
         }
 
         isMounted.current = true;
+
+        
 
     }, [categoryIdToolkit, paginatinToolkit, sortProperty])
 
@@ -145,8 +150,6 @@ function Home() {
     const onChangePaginationPage = (num) => {
         dispatch(setPaginationId(num))
     }
-
-
 
     const onSelectCategory = React.useCallback((index) => {
         dispatch(setCategory(index));
@@ -165,34 +168,6 @@ function Home() {
         });
     };
 
-    // if(pizzaItems.length){
-    //     pizzaItems.filter((obj) => {
-    //         console.log(obj)
-    //         if (obj.title.includes(searchValue)) {
-    //             return true
-    //         }
-    //         return false
-    //     }).map((obj) => (
-    //             <PizzaBlock
-    //                 onClickAddPizza={() => console.log("ds")}
-    //                 key={obj.id}
-    //                 isLoading={true}
-    //                 {...obj}
-    //             />))
-    // }
-    // const pizzas = pizzaItems.filter((obj) => {
-    //     console.log(obj)
-    //     if (obj.title.includes(searchValue)) {
-    //         return true
-    //     }
-    //     return false
-    // }).map((obj) => (
-    //         <PizzaBlock
-    //             onClickAddPizza={() => console.log("ds")}
-    //             key={obj.id}
-    //             isLoading={true}
-    //             {...obj}
-    //         />))
 
 
     const pizzas = pizzaItems.map((obj) => (
