@@ -40,6 +40,7 @@ body {
 .container {
   width: $container-width;
   margin: 0 auto;
+  position: relative;
 
   &--cart {
     max-width: 820px;

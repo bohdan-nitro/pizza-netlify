@@ -17,7 +17,10 @@ import { fetchPizzas } from "../redux/actions/pizzas";
 import axios from "axios";
 
 import Pagination from '../components/Pagination';
+
 import { sortList } from '../components/sortPopUp';
+
+import Footer from '../components/Footer/Footer';
 
 
 
@@ -219,6 +222,7 @@ function Home() {
                 }
             </div>
             <Pagination currentPage={paginatinToolkit} onChangePage={onChangePaginationPage} />
+             <Footer/>
         </div>
     );
 }

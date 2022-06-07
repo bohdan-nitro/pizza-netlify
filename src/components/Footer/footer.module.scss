@@ -1,0 +1,65 @@
+@import "../../scss/variables";
+.footer{
+    position: absolute;
+    display: flex;
+    right: 0;
+    bottom: 35px;
+    width: 100%;
+    max-width: 250px;
+    flex-direction: column;
+    text-align: center;
+    transition: all 0.3s ease;
+    .titleWrapper{
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        padding-bottom: 10px;
+        .title{
+            font-weight: 800;
+            font-size: 20px;
+            color: $greenTheme;
+            letter-spacing: 4px;
+            line-height: 22px;
+            position: relative;
+            cursor: pointer;
+        }
+    }
+    
+    .socialWrapper{
+        display: flex;
+        padding-top: 15px;
+        width: 100%;
+        justify-content: space-around;
+        transition: all 0.2s ease;
+        background-color: lighten($greenThemeLight, 20%);
+        border-radius: 20px;
+        padding: 10px;
+        animation: wrapper-animation 4s infinite;
+
+       
+        .socialItem{
+            border: 1px solid $greenTheme;
+            padding: 8px;
+            border-radius: 100%;
+            width: 45px;
+            height: 45px;
+            transition: all 0.3s ease;
+           
+            &:hover{
+                background-color: $greenTheme;
+                color: #fff;
+                transform: scale(1.1);
+                svg{
+                    fill: #fff;
+                    transform: scale(1.1);
+                }
+            }
+        }
+    }
+}
+
+@keyframes wrapper-animation {
+    0%     {background-color:lighten($greenThemeLight, 10%)}
+    50.0% {background-color:lighten($greenThemeLight, 25%)}
+    100.0%  {background-color:lighten($greenThemeLight, 10%)}
+}
