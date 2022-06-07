@@ -14,7 +14,7 @@ const Categories = React.memo(
                     {/* <ul>
                         <li className={activeCategory === null ? "active" : ""}
                             onClick={() => onClickCategory(null)}>Все
-                        </li>
+                        </li>   console.log(isMounted)
                         {items &&
                         items.map((name, index) => (
                             <li className={activeCategory === index ? "active" : ""}

@@ -3,6 +3,11 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 import Button from "../button";
 
+import {useSelector, useDispatch} from "react-redux";
+
+import {addItem} from "../../reduxToolkit/slices/cartSlice";
+
+
 
 function PizzaBlock({id, name, imageUrl, price, types, sizes, onClickAddPizza, addedCount}) {
     //Массив с данными типы пиц
@@ -13,6 +18,13 @@ function PizzaBlock({id, name, imageUrl, price, types, sizes, onClickAddPizza, a
     const [activeType, setActiveType] = useState(types[0]);
     //Стейт для выбора размера
     const [activeSize, setActiveSize] = useState(0);
+
+    const dispatch = useDispatch();
+
+    const totalCartItems = useSelector(state => state.cart.items.find(obj => obj.id === id))
+
+
+    const totalCountItems = totalCartItems ? totalCartItems.count : 0
 
 
     const onSelectType = (index) => {
@@ -34,6 +46,19 @@ function PizzaBlock({id, name, imageUrl, price, types, sizes, onClickAddPizza, a
         };
         onClickAddPizza(obj)
     };
+
+    const onClickAddItem = () => {
+        const item = {
+            id,
+            name,
+            imageUrl,
+            price,
+            size:availableSizes[activeSize],
+            type:typeNames[activeType]
+
+        };
+        dispatch(addItem(item))
+    }
 
     return (
         <div className="pizza-block">
@@ -65,8 +90,8 @@ function PizzaBlock({id, name, imageUrl, price, types, sizes, onClickAddPizza, a
                 </ul>
             </div>
             <div className="pizza-block__bottom">
-                <div className="pizza-block__price">от {price} ₽</div>
-                <Button onClick={onAddPizza} className={"button--add"} outline>
+                <div className="pizza-block__price">от {price} UAH</div>
+                <Button onClick={onClickAddItem} className={"button--add"} outline>
                     <svg
                         width="12"
                         height="12"
@@ -80,7 +105,7 @@ function PizzaBlock({id, name, imageUrl, price, types, sizes, onClickAddPizza, a
                         />
                     </svg>
                     <span>Добавить</span>
-                    {addedCount && <i>{addedCount}</i>}
+                    {totalCountItems > 0 && <i>{totalCountItems}</i>}
                 </Button>
             </div>
         </div>

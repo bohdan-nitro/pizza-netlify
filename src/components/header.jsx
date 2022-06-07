@@ -13,6 +13,12 @@ function Header() {
     //useSelector должен вернуть ответ в виде обьекта
     // const {totalPrice, totalCount} = useSelector(({ cart }) => cart);
 
+
+    //Версия с редакс-тулкит
+    const {totalPrice, items} = useSelector(state => state.cart)
+
+    const totalCount = items.reduce((sum, item) => sum + item.count, 0);
+
     return (
         <div className="header">
             <div className="container">
@@ -30,7 +36,7 @@ function Header() {
                 <div className="header__cart">
                     <Link to={"/cart"}>
                         <Button className={"button--cart"}>
-                            <span>{""}UA</span>
+                            <span>{totalPrice} UAH</span>
                             <div className="button__delimiter"></div>
                             <svg
                                 width="18"
@@ -61,7 +67,7 @@ function Header() {
                                     strokeLinejoin="round"
                                 />
                             </svg>
-                            <span>{"0"}</span>
+                            <span>{totalCount}</span>
                         </Button>
                     </Link>
                 </div>

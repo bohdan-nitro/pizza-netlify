@@ -13,9 +13,6 @@ export const sortList = [
     { name: 'алфавиту (ASC)', sortProperty: "-title"},
   ];
 
- 
-
- 
 
 const SortPopUp = () => {
     const sortData = useSelector(state => state.filter.sort)
@@ -38,9 +35,7 @@ const SortPopUp = () => {
         // }
         dispatch(setSort(obj))
         
-
         setVisiblePopUp(false);
-        console.log(obj)
     };
 
     const toggleVisiblePopup = () => {
@@ -51,12 +46,15 @@ const SortPopUp = () => {
         const path = event.path || (event.composedPath && event.composedPath());
         if (!path.includes(sortRef.current)) {
             setVisiblePopUp(false);
-        }
+        }  
     };
     //Отлавливаем первый рендер на странице задаем лиснер для клика по всему документу
     // Передаем хендлер, который будет показывать область клика
     React.useEffect(() => {
         document.body.addEventListener("click", handeOutSideClick)
+        return () => {
+            document.body.removeEventListener("click", handeOutSideClick)
+        }
     }, []);
 
     return (

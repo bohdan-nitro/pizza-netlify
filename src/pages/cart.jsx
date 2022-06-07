@@ -7,36 +7,36 @@ import { CartItem, Button } from '../components';
 import { clearCart, removeCartItem, plusCartItem, minusCartItem } from '../redux/actions/cart';
 import {element} from "prop-types";
 
+import {clearItems} from "../reduxToolkit/slices/cartSlice"
+import EmptyCart from '../components/EmptyCart';
+
 function Cart() {
     const dispatch = useDispatch();
                         //totalPrice, totalCount
     // const { items } = useSelector(({ cart }) => cart);
 
-    const items = {
-        
-    }
+    const {items, totalPrice} = useSelector(state => state.cart);
+    
+    const totalCount = items.reduce((sum, item) => sum + item.count, 0);
 
-    const totalCount = 0;
-
-    const totalPrice = 35;
 
     const [open, setOpen] = useState(false)
 
-    const addedPizzas = Object.keys(items).map((key) => {
-        return items[key].items[0];
-    });
+    // const addedPizzas = Object.keys(items).map((key) => {
+    //     return items[key].items[0];
+    // });
 
     const onClearCart = () => {
         if (window.confirm('Вы действительно хотите очистить корзину?')) {
-            dispatch(clearCart());
+            dispatch(clearItems());
         }
     };
 
-    const onRemoveItem = (id) => {
-        if (window.confirm('Вы действительно хотите удалить?')) {
-            dispatch(removeCartItem(id));
-        }
-    };
+    // const onClearItems = () => {
+    //     if (window.confirm('Вы действительно хотите удалить?')) {
+    //         dispatch(removeCartItem(id));
+    //     }
+    // };
 
     const onPlusItem = (id) => {
         dispatch(plusCartItem(id));
@@ -62,16 +62,10 @@ function Cart() {
         )
     }
 
-    const orderValues = Object.values(items).map(item => item.items);
-
-    const filteredOrder = orderValues.map((item, i) => {
-        return item[0]
-    })
-
-    console.log(filteredOrder.map(elem => elem.name))
+ 
 
     const onClickOrder = () => {
-        console.log('ВАШ ЗАКАЗ', items);
+        console.log('ВАШ ЗАКАЗ', items)
         if (items){
             setOpen(!open)
         }
@@ -79,9 +73,6 @@ function Cart() {
     };
 
     
-
-
-
     return (
         <div className="content">
             <div className="container container--cart">
@@ -160,18 +151,14 @@ function Cart() {
                             </div>
                         </div>
                         <div className="content__items">
-                            {addedPizzas.map((obj) => (
+                            {items.map((obj) => (
                                 <CartItem
                                     key={obj.id}
                                     id={obj.id}
                                     name={obj.name}
-                                    type={obj.type}
-                                    size={obj.size}
-                                    totalPrice={items[obj.id].totalPrice}
-                                    totalCount={items[obj.id].items.length}
-                                    onRemove={onRemoveItem}
-                                    onMinus={onMinusItem}
-                                    onPlus={onPlusItem}
+                                    totalPrice={obj.price}
+                                    totalCount={obj.count}
+                                    {...obj}
                                 />
                             ))}
                         </div>
@@ -181,7 +168,7 @@ function Cart() {
                   Всего пицц: <b>{totalCount} шт.</b>
                 </span>
                                 <span>
-                  Сумма заказа: <b>{totalPrice} ₽</b>
+                  Сумма заказа: <b>{totalPrice} UAH</b>
                 </span>
                             </div>
                             <div className="cart__bottom-buttons">
@@ -209,28 +196,9 @@ function Cart() {
                                 </Button>
                             </div>
                         </div>
-                        <div>
-                            {open ? filteredOrder.map(elem => {
-                                return <Test name={elem.name}/>
-                            }) : null}
-                        </div>
+                      
                     </div>
-                ) : (
-                    <div className="cart cart--empty">
-                        <h2>
-                            Корзина пустая <i>😕</i>
-                        </h2>
-                        <p>
-                            Вероятней всего, вы не заказывали ещё пиццу.
-                            <br />
-                            Для того, чтобы заказать пиццу, перейди на главную страницу.
-                        </p>
-                        <img src={cartEmptyImage} alt="Empty cart" />
-                        <Link to={"/"} className="button button--black">
-                            <span>Вернуться назад</span>
-                        </Link>
-                    </div>
-                )}
+                ) : <EmptyCart/>}
             </div>
         </div>
     );
