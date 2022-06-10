@@ -1,22 +1,40 @@
 @import '../variables';
 
 .pizza-block {
-  width: 280px;
+  width: 100%;
+  max-width: 320px;
   text-align: center;
   margin-bottom: 65px;
   cursor: pointer;
   transition: all 0.2s ease;
+  margin-right: 2.2%;
 
   &:hover{
     transform: scale(1.03);
   }
 
+  &:nth-child(3) {
+    margin-right: 0;
+    margin-left: 100px;
+  }
+  &:nth-child(2) {
+    margin-left: 100px;
+  }
+  &:nth-child(5) {
+    margin-left: 100px;
+  }
+  &:nth-child(6) {
+    margin-right: 0;
+    margin-left: 100px;
+  }
+
   &:not(:nth-of-type(4n)) {
-    margin-right: 3.7%;
+    
   }
 
   &__image {
-    width: 260px;
+    width: 100%;
+    max-width: 300px;
   }
 
   &__title {

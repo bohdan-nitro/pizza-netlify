@@ -3,7 +3,7 @@
     position: absolute;
     display: flex;
     right: 0;
-    bottom: 35px;
+    bottom: 25px;
     width: 100%;
     max-width: 250px;
     flex-direction: column;
@@ -14,7 +14,18 @@
         width: 100%;
         justify-content: center;
         padding-bottom: 10px;
+        transition: all 0.3s ease;
         .title{
+            font-weight: 800;
+            font-size: 20px;
+            color: $greenTheme;
+            letter-spacing: 4px;
+            line-height: 22px;
+            position: relative;
+            cursor: pointer;
+        }
+        .titleActive{
+            animation: titleActiveAnimation 4s infinite;
             font-weight: 800;
             font-size: 20px;
             color: $greenTheme;
@@ -35,14 +46,16 @@
         border-radius: 20px;
         padding: 10px;
         animation: wrapper-animation 4s infinite;
+        position: absolute;
+        top: 30px;
 
        
         .socialItem{
             border: 1px solid $greenTheme;
-            padding: 8px;
+            padding: 6px;
             border-radius: 100%;
-            width: 45px;
-            height: 45px;
+            width: 40px;
+            height: 40px;
             transition: all 0.3s ease;
            
             &:hover{
@@ -62,4 +75,11 @@
     0%     {background-color:lighten($greenThemeLight, 10%)}
     50.0% {background-color:lighten($greenThemeLight, 25%)}
     100.0%  {background-color:lighten($greenThemeLight, 10%)}
+}
+
+@keyframes titleActiveAnimation {
+    0% {transform: scale(1); color: $greenTheme}
+    50.0% {transform: scale(1.2); color: lighten($greenThemeLight, 15%)}
+    100.0% {transform: scale(1); color: $greenTheme}
+    
 }

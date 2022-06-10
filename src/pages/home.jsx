@@ -12,7 +12,7 @@ import { setCategory, setSortBy } from "../redux/actions/filters";
 
 import { setCategoryId, setPaginationId, setFilters } from '../reduxToolkit/slices/filterSlice';
 
-import { fetchPizzas } from "../redux/actions/pizzas";
+import { fetchPizzasToolKit } from "../reduxToolkit/slices/pizzasSlice";
 
 import axios from "axios";
 
@@ -59,9 +59,15 @@ function Home() {
     // const items = useSelector(({ pizzas }) => pizzas.items);sort
 
     /////////////////////////////////////////////////////////////
-    const [pizzaItems, setPizzasItems] = useState([]);
+   
 
-    const [isLoading, setIsLoading] = useState(true);
+
+
+    const {items, status} = useSelector(state => state.pizzas);
+
+    console.log(status, items)
+
+  
 
 
 
@@ -90,30 +96,29 @@ function Home() {
     }, []);
 
     //Получение пиц
+    const sortBy = sortProperty.replace("-", "");
+    const order = sortProperty.includes("-") ? "asc" : "desc";
+    const category = categoryIdToolkit > 0 ? `category=${categoryIdToolkit}` : "";
 
-    const fetchPizzas = () => {
-        const sortBy = sortProperty.replace("-", "");
-        const order = sortProperty.includes("-") ? "asc" : "desc";
-        const category = categoryIdToolkit > 0 ? `category=${categoryIdToolkit}` : "";
+    const search = searchValue;
 
-        const search = searchValue;
-
-
-        axios.get(`https://62989024de3d7eea3c6aad4a.mockapi.io/items?page=${paginatinToolkit}&limit=6&${category}&sortBy=${sortBy}&order=${order}&search=${searchValue}`)
-            .then(res => {
-                setPizzasItems(res.data);
-                setIsLoading(false);
-            })
+    const getPizzas = async () => {
+        dispatch(fetchPizzasToolKit({
+            sortBy,
+            order,
+            category,
+            search,
+            paginatinToolkit
+          })) 
     }
 
     
 
     useEffect(() => {
 
-        setIsLoading(true);
-
+        getPizzas();
         if (!isSearch.current) {
-            fetchPizzas()
+            
             setTimeout(() => {
                 window.scrollTo({
                     top: 0,
@@ -122,14 +127,13 @@ function Home() {
             }, 200) 
         isSearch.current = false;
 
-        
-
     }}, [categoryIdToolkit, paginatinToolkit, sortProperty, searchValue])
 
 
     //Отлавливаем url 
 
     useEffect(() => {
+
         if (isMounted.current) {
             const queryString = qs.stringify({
                 sortProperty: sortProperty ? sortProperty : "raiting",
@@ -140,8 +144,6 @@ function Home() {
         }
 
         isMounted.current = true;
-
-        
 
     }, [categoryIdToolkit, paginatinToolkit, sortProperty])
 
@@ -154,31 +156,19 @@ function Home() {
         dispatch(setPaginationId(num))
     }
 
-    const onSelectCategory = React.useCallback((index) => {
-        dispatch(setCategory(index));
-    }, []);
 
     //Получает названия типа и будет его передавать в редакс
-
     const onSelectSortType = React.useCallback((type) => {
         dispatch(setSortBy(type));
     }, []);
 
-    const handleAddPizzaToCart = (obj) => {
-        dispatch({
-            type: "ADD_PIZZA_CART",
-            payload: obj,
-        });
-    };
 
 
 
-    const pizzas = pizzaItems.map((obj) => (
+    const pizzas = items.map((obj) => (
         <PizzaBlock
             onClickAddPizza={() => console.log("ds")}
             key={obj.id}
-            //addedCount = { cartItems[obj.id] && cartItems[obj.id].items.length }
-            isLoading={true}
             {...obj}
         />))
 
@@ -190,10 +180,12 @@ function Home() {
     }).map(obj => <PizzaBlock
             onClickAddPizza={() => console.log("ds")}
             key={obj.id}
-            isLoading={true}
+            
             {...obj}
         />
     )
+
+    const skeleton = [...new Array(8)].map((_, index) => <PizzaLoadingBlock key={index} />);
 
 
 
@@ -217,9 +209,7 @@ function Home() {
                    )) : Array(12).fill(0).map((_, index) => <PizzaLoadingBlock key={index} />)} */}
 
 
-                {
-                    isLoading ? [...new Array(8)].map((_, index) => <PizzaLoadingBlock key={index} />) : pizzas
-                }
+                { status === "loading" ? skeleton : pizzas }
             </div>
             <Pagination currentPage={paginatinToolkit} onChangePage={onChangePaginationPage} />
              <Footer/>

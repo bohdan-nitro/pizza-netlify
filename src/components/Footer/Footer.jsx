@@ -44,21 +44,17 @@ function Footer() {
         }
     };
 
-    console.log(visiblePopUp)
-
     useEffect(() => {
         document.addEventListener("click", handeOutSideClick);
         
     }, [])
 
 
-
-
     return (
         <>
             <div ref={sortRef} className={styles.footer}>
                 <div onClick={toggleVisiblePopup} className={styles.titleWrapper}>
-                    <h4 className={styles.title}>Socials</h4>
+                    <h4 className={visiblePopUp ? styles.titleActive : styles.title}>Socials</h4>
                 </div>
                 {visiblePopUp && (
                     <div className={visiblePopUp && styles.socialWrapper}>
