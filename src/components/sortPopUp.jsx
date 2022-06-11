@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from 'react-redux';
 
-import { setSort } from '../reduxToolkit/slices/filterSlice';
+import { setSort, selectSort } from '../reduxToolkit/slices/filterSlice';
 
 export const sortList = [
     { name: 'популярности (DESC)', sortProperty:"raiting" },
@@ -15,26 +15,19 @@ export const sortList = [
 
 
 const SortPopUp = () => {
-    const sortData = useSelector(state => state.filter.sort)
+    const sortData = useSelector(selectSort)
+
     const dispatch = useDispatch();
 
-    //Состояние для попапа
     const [visiblePopUp, setVisiblePopUp] = React.useState(false);
-    //Состояние для выбора в попапе( мы указываем что как только он отрендерится на странице чтобы он начинался с 0 элемента
-    // const [activeItem, setactiveItem] = React.useState(0);
-    // //Создаем сортреф для хранения ссылок чтобы использовать в дальнейшем(она сосздает обьект со значением current
+
     const sortRef = React.useRef();
 
-    // const activeLabel = items.find(obj => obj.type === activeSortType).name;
 
 
 
     const onSelectItem = (obj) => {
-        // if (onClickSortType) {
-        //     onClickSortType(index);
-        // }
         dispatch(setSort(obj))
-        
         setVisiblePopUp(false);
     };
 
@@ -48,8 +41,6 @@ const SortPopUp = () => {
             setVisiblePopUp(false);
         }  
     };
-    //Отлавливаем первый рендер на странице задаем лиснер для клика по всему документу
-    // Передаем хендлер, который будет показывать область клика
     React.useEffect(() => {
         document.body.addEventListener("click", handeOutSideClick)
         return () => {
@@ -80,7 +71,6 @@ const SortPopUp = () => {
                 <ul>
                     {sortList &&
                     sortList.map((obj, index) => (
-                        //Следим за каждым обьектом в котором есть тип и провряем его на наличия данных если есть то даем актив
                         <li onClick={() => onSelectItem(obj)} className={sortData.sortProperty === obj.sortProperty ? "active" : ""}
                             key={`${obj.type}_${index}`}>{obj.name}</li>))}
                 </ul>

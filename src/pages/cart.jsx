@@ -1,30 +1,21 @@
 import React, {useState} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-
-import cartEmptyImage from '../assets/img/empty-cart.png';
 import { CartItem, Button } from '../components';
-import { clearCart, removeCartItem, plusCartItem, minusCartItem } from '../redux/actions/cart';
-import {element} from "prop-types";
 
 import {clearItems} from "../reduxToolkit/slices/cartSlice"
 import EmptyCart from '../components/EmptyCart';
+import {cartSelect} from "../reduxToolkit/slices/cartSlice";
 
 function Cart() {
     const dispatch = useDispatch();
-                        //totalPrice, totalCount
-    // const { items } = useSelector(({ cart }) => cart);
 
-    const {items, totalPrice} = useSelector(state => state.cart);
+    const {items, totalPrice} = useSelector(cartSelect);
     
     const totalCount = items.reduce((sum, item) => sum + item.count, 0);
 
 
     const [open, setOpen] = useState(false)
-
-    // const addedPizzas = Object.keys(items).map((key) => {
-    //     return items[key].items[0];
-    // });
 
     const onClearCart = () => {
         if (window.confirm('Вы действительно хотите очистить корзину?')) {
@@ -32,35 +23,21 @@ function Cart() {
         }
     };
 
-    // const onClearItems = () => {
-    //     if (window.confirm('Вы действительно хотите удалить?')) {
-    //         dispatch(removeCartItem(id));
-    //     }
-    // };
+    // const Test = ({name}) => {
+    //     return (
+    //         <>
 
-    const onPlusItem = (id) => {
-        dispatch(plusCartItem(id));
-    };
-
-    const onMinusItem = (id) => {
-        dispatch(minusCartItem(id));
-    };
-
-    const Test = ({name}) => {
-        return (
-            <>
-
-                <div className="order-box">
-                    <div className={"title-container"}>
-                        <h3>Ваш заказ</h3>
-                    </div>
-                    <div>
-                        {name}
-                    </div>
-                </div>
-            </>
-        )
-    }
+    //             <div className="order-box">
+    //                 <div className={"title-container"}>
+    //                     <h3>Ваш заказ</h3>
+    //                 </div>
+    //                 <div>
+    //                     {name}
+    //                 </div>
+    //             </div>
+    //         </>
+    //     )
+    // }
 
  
 

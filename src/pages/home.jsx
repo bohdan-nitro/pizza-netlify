@@ -8,13 +8,9 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { useNavigate } from "react-router-dom"
 
-import { setCategory, setSortBy } from "../redux/actions/filters";
+import { setCategoryId, setPaginationId, setFilters, setSort, selectFilter, selectSort } from '../reduxToolkit/slices/filterSlice';
 
-import { setCategoryId, setPaginationId, setFilters } from '../reduxToolkit/slices/filterSlice';
-
-import { fetchPizzasToolKit } from "../reduxToolkit/slices/pizzasSlice";
-
-import axios from "axios";
+import { fetchPizzasToolKit, selectPizzaData } from "../reduxToolkit/slices/pizzasSlice";
 
 import Pagination from '../components/Pagination';
 
@@ -44,40 +40,23 @@ function Home() {
 
     const isMounted = useRef(null);
 
-    const categoryIdToolkit = useSelector(state => state.filter.categoryId);
+    const {items, status} = useSelector(selectPizzaData);
 
-    const paginatinToolkit = useSelector(state => state.filter.currentPage);
+    const {currentPage, categoryId, searchValue} = useSelector(selectFilter);
 
-    const sortProperty = useSelector(state => state.filter.sort.sortProperty);
+    const {sortProperty} = useSelector(selectSort)
 
-    const searchValue = useSelector(state => state.filter.searchValue);
+    //Как било без селекторов
 
-   
+    // const categoryIdToolkit = useSelector(state => state.filter.categoryId);
 
+    // const paginatinToolkit = useSelector(state => state.filter.currentPage);
 
+    // const sortProperty = useSelector(state => state.filter.sort.sortProperty);
 
-    // const items = useSelector(({ pizzas }) => pizzas.items);sort
+    // const searchValue = useSelector(state => state.filter.searchValue);
 
-    /////////////////////////////////////////////////////////////
-   
-
-
-
-    const {items, status} = useSelector(state => state.pizzas);
-
-    console.log(status, items)
-
-  
-
-
-
-
-    ////////////////////////////////////////////////////////////////
-
-    // useEffect(() => {
-    //     dispatch(fetchPizzas(sortBy, category));
-    // }, [sortBy, category]);
-
+ 
 
 
     useEffect(() => {
@@ -98,8 +77,7 @@ function Home() {
     //Получение пиц
     const sortBy = sortProperty.replace("-", "");
     const order = sortProperty.includes("-") ? "asc" : "desc";
-    const category = categoryIdToolkit > 0 ? `category=${categoryIdToolkit}` : "";
-
+    const category = categoryId > 0 ? `category=${categoryId}` : "";
     const search = searchValue;
 
     const getPizzas = async () => {
@@ -108,11 +86,9 @@ function Home() {
             order,
             category,
             search,
-            paginatinToolkit
+            currentPage
           })) 
     }
-
-    
 
     useEffect(() => {
 
@@ -127,7 +103,7 @@ function Home() {
             }, 200) 
         isSearch.current = false;
 
-    }}, [categoryIdToolkit, paginatinToolkit, sortProperty, searchValue])
+    }}, [categoryId, currentPage, sortProperty, searchValue])
 
 
     //Отлавливаем url 
@@ -137,15 +113,15 @@ function Home() {
         if (isMounted.current) {
             const queryString = qs.stringify({
                 sortProperty: sortProperty ? sortProperty : "raiting",
-                categoryIdToolki: categoryIdToolkit ? categoryIdToolkit : 0,
-                paginatinToolkit: paginatinToolkit ? paginatinToolkit : 0
+                categoryIdToolki: categoryId ? categoryId : 0,
+                paginatinToolkit: currentPage ? currentPage : 0
             })
             navigate(`?${queryString}`)
         }
 
         isMounted.current = true;
 
-    }, [categoryIdToolkit, paginatinToolkit, sortProperty])
+    }, [categoryId, currentPage, sortProperty])
 
 
     const onChangeCategoryId = (id) => {
@@ -159,7 +135,7 @@ function Home() {
 
     //Получает названия типа и будет его передавать в редакс
     const onSelectSortType = React.useCallback((type) => {
-        dispatch(setSortBy(type));
+        dispatch(setSort(type));
     }, []);
 
 
@@ -192,7 +168,7 @@ function Home() {
     return (
         <div className="container">
             <div className="content__top">
-                <Categories activeCategory={categoryIdToolkit} onClickCategory={onChangeCategoryId} items={categoryNames} value={categoryIdToolkit} />
+                <Categories activeCategory={categoryId} onClickCategory={onChangeCategoryId} items={categoryNames} value={categoryId} />
                 <SortPopUp value={sortProperty} items={sortItems} onClickSortType={onSelectSortType} />
             </div>
             <h2 className="content__title">Все пиццы</h2>
@@ -211,7 +187,7 @@ function Home() {
 
                 { status === "loading" ? skeleton : pizzas }
             </div>
-            <Pagination currentPage={paginatinToolkit} onChangePage={onChangePaginationPage} />
+            <Pagination activePage={currentPage} onChangePage={onChangePaginationPage} />
              <Footer/>
         </div>
     );

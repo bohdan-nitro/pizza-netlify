@@ -6,16 +6,16 @@ import logoSvg from "../assets/img/pizza-logo.svg";
 import Button from "./button";
 import Search from "./Search";
 
+import {cartSelect} from "../reduxToolkit/slices/cartSlice";
+
+
 
 
 function Header() {
-    //Берем данные с редакса деструктурируем обьект карт и берем из него значения цены и счетчика
-    //useSelector должен вернуть ответ в виде обьекта
-    // const {totalPrice, totalCount} = useSelector(({ cart }) => cart);
-
-
     //Версия с редакс-тулкит
-    const {totalPrice, items} = useSelector(state => state.cart)
+    const {totalPrice, items} = useSelector(cartSelect)
+
+    console.log(cartSelect)
 
     const totalCount = items.reduce((sum, item) => sum + item.count, 0);
 

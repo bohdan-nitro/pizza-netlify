@@ -9,20 +9,7 @@ import { addItem, minusItem, removeItem } from '../reduxToolkit/slices/cartSlice
 //Вытаскиваем пропсы из компонента Cart
 const CartItem = ({id, name, type, size, totalPrice, totalCount, onRemove, onMinus, onPlus}) => {
 
-    console.log(totalCount, totalPrice)
-
     const dispatch = useDispatch();
-
-
-    const handleRemoveItem = () => {
-        onRemove(id);
-    };
-    const handleOnPlusItem = () => {
-        onPlus(id);
-    };
-    const handleOnMinusItem = () => {
-        onMinus(id);
-    };
 
     const onClickPlusItem = () => {
         dispatch(addItem({

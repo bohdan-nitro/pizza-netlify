@@ -36,6 +36,10 @@ const initialState = {
      },
     },
   })
+
+  export const selectSort = state => state.filter.sort;
+
+  export const selectFilter = state => state.filter;
   
   export const { setCategoryId, setPaginationId, setSort, setSearchValue, setFilters } = filterSlice.actions
   

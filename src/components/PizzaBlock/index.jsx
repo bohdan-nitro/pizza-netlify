@@ -5,7 +5,7 @@ import Button from "../button";
 
 import {useSelector, useDispatch} from "react-redux";
 
-import {addItem} from "../../reduxToolkit/slices/cartSlice";
+import {addItem, cartSelectById} from "../../reduxToolkit/slices/cartSlice";
 
 
 
@@ -21,7 +21,7 @@ function PizzaBlock({id, name, imageUrl, price, types, sizes, onClickAddPizza, a
 
     const dispatch = useDispatch();
 
-    const totalCartItems = useSelector(state => state.cart.items.find(obj => obj.id === id))
+    const totalCartItems = useSelector(cartSelectById(id));
 
 
     const totalCountItems = totalCartItems ? totalCartItems.count : 0

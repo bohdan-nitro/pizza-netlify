@@ -11,15 +11,6 @@ const Categories = React.memo(
         return (
             <div>
                 <div className="categories">
-                    {/* <ul>
-                        <li className={activeCategory === null ? "active" : ""}
-                            onClick={() => onClickCategory(null)}>Все
-                        </li>   console.log(isMounted)
-                        {items &&
-                        items.map((name, index) => (
-                            <li className={activeCategory === index ? "active" : ""}
-                                onClick={() => onClickCategory(index)} key={`${name}_${index}`}>{name}</li>))}
-                    </ul> */}
                     <ul>
                         {categories.map((item, i) => <li className={value === i ? "active" : ""} onClick={() => onClickCategory(i)} key={i}>{item}</li>)}
                     </ul>

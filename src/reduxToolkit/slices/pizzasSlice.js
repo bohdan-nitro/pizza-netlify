@@ -3,8 +3,8 @@ import axios from "axios";
 //Для запросов на сервер можем использовать асинхроннийєкшн от тулкита в котором нужно прокинуть названия слайса єто pizza в нашем случае и  
 //указать название кастомное в нащем лучае фетчпизастатус
 export const fetchPizzasToolKit = createAsyncThunk("pizza/fetchPizzasStatus", async (params) => {
-    const { sortBy,order,category,search, paginatinToolkit } = params;
-    const {data} = await axios.get(`https://62989024de3d7eea3c6aad4a.mockapi.io/items?page=${paginatinToolkit}&limit=6&${category}&sortBy=${sortBy}&order=${order}&search=${search}`)
+    const { sortBy,order,category,search, currentPage } = params;
+    const {data} = await axios.get(`https://62989024de3d7eea3c6aad4a.mockapi.io/items?page=${currentPage}&limit=6&${category}&sortBy=${sortBy}&order=${order}&search=${search}`)
     return data
 })
 
@@ -40,6 +40,8 @@ export const pizzaSlice = createSlice({
         }
     }
 })
+
+export const selectPizzaData = state => state.pizzas;
 
 export const { setItems } = pizzaSlice.actions
 
