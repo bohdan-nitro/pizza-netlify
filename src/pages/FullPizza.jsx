@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from "react";
-import {useParams, useNavigate, useLocation} from "react-router-dom";
+import {useParams, useNavigate} from "react-router-dom";
 import axios from "axios";
 import { PizzaLoadingBlock } from "../components";
 import { useSelector, useDispatch } from "react-redux";
 import { addItem, cartSelectById } from "../reduxToolkit/slices/cartSlice";
 import {Button} from "../components";
-import LoadingBlockFullPizza from "../components/PizzaBlock/LoadingBlockFullPizza";
 
 
 const FullPizza = () => {

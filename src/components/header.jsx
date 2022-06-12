@@ -38,7 +38,7 @@ function Header() {
                     </div>
                 </Link>
 
-                {pathname == `/pizza/${userId}` ? <></> : <Search/>}
+                {pathname === `/pizza/${userId}` ? <></> : <Search/>}
                 <div className="header__cart">
                     <Link to={"/cart"}>
                         <Button className={"button--cart"}>
