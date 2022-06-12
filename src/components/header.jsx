@@ -1,5 +1,5 @@
 import React from "react";
-import {Link} from "react-router-dom";
+import {Link, useLocation, useParams} from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import logoSvg from "../assets/img/pizza-logo.svg";
@@ -14,10 +14,16 @@ import {cartSelect} from "../reduxToolkit/slices/cartSlice";
 function Header() {
     //Версия с редакс-тулкит
     const {totalPrice, items} = useSelector(cartSelect)
+    const location = useLocation();
 
-    console.log(cartSelect)
+    const {userId} = useParams();
+
+    const {pathname} = location;
+
+    console.log(location)
 
     const totalCount = items.reduce((sum, item) => sum + item.count, 0);
+
 
     return (
         <div className="header">
@@ -32,7 +38,7 @@ function Header() {
                     </div>
                 </Link>
 
-                <Search/>
+                {pathname == `/pizza/${userId}` ? <></> : <Search/>}
                 <div className="header__cart">
                     <Link to={"/cart"}>
                         <Button className={"button--cart"}>

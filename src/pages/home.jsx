@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import {Link} from "react-router-dom";
 
 import { Categories, PizzaBlock, SortPopUp, PizzaLoadingBlock } from "../components";
 
@@ -142,24 +143,10 @@ function Home() {
 
 
     const pizzas = items.map((obj) => (
-        <PizzaBlock
-            onClickAddPizza={() => console.log("ds")}
-            key={obj.id}
-            {...obj}
-        />))
-
-    const filteredWithSearch = pizzas.filter(obj => {
-        if (obj.props.name.toLowerCase().includes(searchValue.toLowerCase())) {
-            return true
-        }
-        return false
-    }).map(obj => <PizzaBlock
-            onClickAddPizza={() => console.log("ds")}
-            key={obj.id}
-            
+         <PizzaBlock
             {...obj}
         />
-    )
+        ))
 
     const skeleton = [...new Array(8)].map((_, index) => <PizzaLoadingBlock key={index} />);
 
@@ -188,7 +175,6 @@ function Home() {
                 { status === "loading" ? skeleton : pizzas }
             </div>
             <Pagination activePage={currentPage} onChangePage={onChangePaginationPage} />
-             <Footer/>
         </div>
     );
 }
