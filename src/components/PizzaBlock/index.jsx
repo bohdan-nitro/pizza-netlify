@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import Button from "../button";
+import {Link} from "react-router-dom"
 
 import {useSelector, useDispatch} from "react-redux";
 
@@ -9,7 +10,8 @@ import {addItem, cartSelectById} from "../../reduxToolkit/slices/cartSlice";
 
 
 
-function PizzaBlock({id, name, imageUrl, price, types, sizes, onClickAddPizza, addedCount}) {
+function PizzaBlock({id, name, imageUrl, price, types, sizes,}) {
+    
     //Массив с данными типы пиц
     const typeNames = ["тонкое", "традиционное"];
     //Массив с данными размеры пиц
@@ -34,18 +36,18 @@ function PizzaBlock({id, name, imageUrl, price, types, sizes, onClickAddPizza, a
         setActiveSize(index);
     };
 
-    const onAddPizza = () => {
-        const obj = {
-            id,
-            name,
-            imageUrl,
-            price,
-            size:availableSizes[activeSize],
-            type:typeNames[activeType]
+    // const onAddPizza = () => {
+    //     const obj = {
+    //         id,
+    //         name,
+    //         imageUrl,
+    //         price,
+    //         size:availableSizes[activeSize],
+    //         type:typeNames[activeType]
 
-        };
-        onClickAddPizza(obj)
-    };
+    //     };
+    //     onClickAddPizza(obj)
+    // };
 
     const onClickAddItem = () => {
         const item = {
@@ -62,11 +64,13 @@ function PizzaBlock({id, name, imageUrl, price, types, sizes, onClickAddPizza, a
 
     return (
         <div className="pizza-block">
+            <Link  key={id} to={`/pizza/${id}`}>
             <img
                 className="pizza-block__image"
                 src={imageUrl}
                 alt="Pizza"
             />
+            </Link>
             <h4 className="pizza-block__title">{name}</h4>
             <div className="pizza-block__selector">
                 <ul>
